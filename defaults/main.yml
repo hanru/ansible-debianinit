@@ -1,0 +1,44 @@
+---
+
+# desired properties: name, password, shell
+di_add_users: []
+
+di_ssh_port: 22
+di_ssh_password_authentication: 'no'
+di_ssh_permit_root_login: 'without-password'
+di_ssh_allow_users: 'root'
+
+di_sudoers_password: []
+di_sudoers_passwordless: []
+
+di_system_removed_packages:
+  - apache2
+  - bind9
+  - postfix
+  - rpcbind
+  - samba
+  - sendmail
+  - snmp
+
+di_system_installed_packages:
+  - bzip2
+  - ca-certificates
+  - cron
+  - dbus
+  - dnsutils
+  - less
+  - logrotate
+  - mtr-tiny
+  - openssl
+  - screen
+  - sudo
+  - time
+  - vim
+  - wget
+
+di_system_fail2ban_enabled: yes
+di_system_vnstat_enabled: yes
+di_system_timezone: 'UTC'
+di_system_timesync_enabled: yes
+
+di_ufw_enabled: yes

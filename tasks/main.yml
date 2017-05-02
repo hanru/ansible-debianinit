@@ -1,0 +1,14 @@
+---
+
+# Users
+- include: users.yml
+
+# SSH and sudoers
+- include: ssh.yml
+
+# System and services
+- include: system.yml
+
+# UFW basic rules
+- include: ufw.yml
+  when: di_ufw_enabled

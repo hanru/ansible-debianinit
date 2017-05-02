@@ -1,0 +1,35 @@
+---
+
+- name: purge unnecessary packages
+  apt: name={{ item }} state=absent purge=yes
+  with_items: '{{ di_system_removed_packages }}'
+  when: di_system_removed_packages | length > 0
+
+- name: install necessary packages
+  apt: name={{ item }} state=present update_cache=yes
+  with_items: '{{ di_system_installed_packages }}'
+  when: di_system_installed_packages | length > 0
+
+- name: install fail2ban package
+  apt: name=fail2ban state=present
+  when: di_system_fail2ban_enabled
+
+- name: enable fail2ban service
+  service: name=fail2ban state=started enabled=yes
+  when: di_system_fail2ban_enabled
+
+- name: install vnstat package
+  apt: name=vnstat state=present
+  when: di_system_vnstat_enabled
+
+- name: enable vnstat service
+  service: name=vnstat state=started enabled=yes
+  when: di_system_vnstat_enabled
+
+- name: set timezone
+  timezone: name={{ di_system_timezone }}
+  notify: restart cron
+
+- name: enable time sync
+  command: timedatectl set-ntp true
+  when: di_system_timesync_enabled

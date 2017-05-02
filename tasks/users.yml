@@ -1,0 +1,10 @@
+---
+
+- name: add some users
+  user:
+    name: '{{ item.name }}'
+    password: '{{ item.password | password_hash("sha512") }}'
+    shell: '{{ item.shell }}'
+    update_password: on_create
+  with_items: '{{ di_add_users }}'
+  when: di_add_users | length > 0

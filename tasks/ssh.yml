@@ -1,0 +1,38 @@
+---
+
+- name: configure ssh
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '^Port'
+      line: 'Port {{ di_ssh_port }}'
+    - regexp: '^PasswordAuthentication'
+      line: 'PasswordAuthentication {{ di_ssh_password_authentication }}'
+    - regexp: '^PermitRootLogin'
+      line: 'PermitRootLogin {{ di_ssh_permit_root_login }}'
+    - regexp: '^AllowUsers'
+      line: 'AllowUsers {{ di_ssh_allow_users }}'
+  notify: restart ssh
+
+- name: configure password sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^{{ item }}'
+    line: '{{ item }} ALL=(ALL) ALL'
+    validate: 'visudo -cf %s'
+  with_items: '{{ di_sudoers_password }}'
+  when: di_sudoers_password | length > 0
+
+- name: configure passwordless sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^{{ item }}'
+    line: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  with_items: '{{ di_sudoers_passwordless }}'
+  when: di_sudoers_passwordless | length > 0
