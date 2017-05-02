@@ -6,7 +6,7 @@ galaxy_info:
   # timezone module first appears in 2.2
   min_ansible_version: 2.2
   platforms:
-    - name: debian
+    - name: Debian
       versions:
         - jessie
   galaxy_tags:
