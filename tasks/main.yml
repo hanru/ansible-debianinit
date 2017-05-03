@@ -1,13 +1,13 @@
 ---
 
-# Users
-- include: users.yml
-
 # SSH and sudoers
 - include: ssh.yml
 
 # System and services
 - include: system.yml
+
+# Users and sudoers
+- include: users.yml
 
 # UFW basic rules
 - include: ufw.yml

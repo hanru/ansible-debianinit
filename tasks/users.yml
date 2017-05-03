@@ -8,3 +8,23 @@
     update_password: on_create
   with_items: '{{ di_add_users }}'
   when: di_add_users | length > 0
+
+- name: configure password sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^{{ item }}'
+    line: '{{ item }} ALL=(ALL) ALL'
+    validate: 'visudo -cf %s'
+  with_items: '{{ di_sudoers_password }}'
+  when: di_sudoers_password | length > 0
+
+- name: configure passwordless sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^{{ item }}'
+    line: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  with_items: '{{ di_sudoers_passwordless }}'
+  when: di_sudoers_passwordless | length > 0

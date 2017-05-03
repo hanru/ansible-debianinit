@@ -16,23 +16,3 @@
     - regexp: '^AllowUsers'
       line: 'AllowUsers {{ di_ssh_allow_users }}'
   notify: restart ssh
-
-- name: configure password sudoers
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    regexp: '^{{ item }}'
-    line: '{{ item }} ALL=(ALL) ALL'
-    validate: 'visudo -cf %s'
-  with_items: '{{ di_sudoers_password }}'
-  when: di_sudoers_password | length > 0
-
-- name: configure passwordless sudoers
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    regexp: '^{{ item }}'
-    line: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
-    validate: 'visudo -cf %s'
-  with_items: '{{ di_sudoers_passwordless }}'
-  when: di_sudoers_passwordless | length > 0
