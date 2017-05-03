@@ -1,7 +1,9 @@
 debianinit: Debian Server Initialization
 ========================================
 
-This Ansible role configures a minimal Debian server that is ready for future use. Please note that only Debian Jessie x86_64 is guaranteed to work.
+[![Build Status](https://travis-ci.org/hanru/debianinit.svg?branch=master)](https://travis-ci.org/hanru/debianinit)
+
+This Ansible role configures a minimal Debian server that is ready for future use. Please note that currently only Debian Jessie (8.x) and Ubuntu Xenial (16.04) is guaranteed to work.
 
 Requirements
 ------------
@@ -11,12 +13,6 @@ Requirements
 
 Role Variables
 --------------
-
-    di_add_users: []
-
-A list of users to be created on the server. Every user should have three fields defined: `name`, `password` and `shell`.
-
-By default, no users are created.
 
     di_ssh_port: 22
 
@@ -41,18 +37,6 @@ By default this setting is `without-password`.
 Which users are allowed to login via SSH. All allowed users are defined as a string, separated by spaces.
 
 By default only `root` is allowed to login.
-
-    di_sudoers_password: []
-
-A list of users who can execute `sudo` command after providing their passwords.
-
-By default no users are added to this list.
-
-    di_sudoers_passwordless: []
-
-A list of users who can execute `sudo` without providing their passwords. Since `sudo` runs a command as root, it's inherently insecure if password is not required before running. This setting is better left blank for important servers.
-
-By default no users are added to this list.
 
     di_system_removed_packages:
       - apache2
@@ -105,6 +89,24 @@ Whether to enable the time sync service. This service is provided by systemd and
 
 By default this service is enabled.
 
+    di_add_users: []
+
+A list of users to be created on the server. Every user should have three fields defined: `name`, `password` and `shell`. See example section for more on how to define new users.
+
+By default, no users are created.
+
+    di_sudoers_password: []
+
+A list of users who can execute `sudo` command after providing their passwords.
+
+By default no users are added to this list.
+
+    di_sudoers_passwordless: []
+
+A list of users who can execute `sudo` without providing their passwords. Since `sudo` runs a command as root, it's inherently insecure if password is not required before running. This setting is better left blank for important servers.
+
+By default no users are added to this list.
+
     di_ufw_enabled: yes
 
 Whether to install ufw, a human-friendly iptables front-end. By enabling ufw, the sane default policies (allow outgoing, deny incoming) are set and TCP on SSH port is allowed. If the server has further usage, such as http, you will need to manually add ufw rules, e.g. allow TCP on port 80 and 443.
@@ -119,12 +121,18 @@ This role has no dependencies.
 Example Playbook
 ----------------
 
-    - hosts: servers
+    - hosts: testservers
       vars:
         di_add_users:
-          - name: git
+          - name: test
             password: randompassword
+            shell: /bin/bash
+          - name: git
+            password: anotherrandompassword
             shell: /usr/bin/git-shell
+        di_ssh_allow_users: 'root test git'
+        di_sudoers_password:
+          - test
         di_ufw_enabled: no
       roles:
          - { role: hanru.debianinit }
