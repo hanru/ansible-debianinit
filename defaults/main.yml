@@ -35,6 +35,7 @@ di_system_installed_packages:
   - time
   - vim
   - wget
+  - whiptail
 
 di_system_fail2ban_enabled: yes
 di_system_vnstat_enabled: yes
