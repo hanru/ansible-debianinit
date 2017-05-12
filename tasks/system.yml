@@ -33,3 +33,26 @@
 - name: enable time sync
   command: timedatectl set-ntp true
   when: di_system_timesync_enabled
+
+- name: install unattended upgrades packages
+  apt: name={{ item }} state=present
+  with_items:
+    - unattended-upgrades
+    - apt-listchanges
+  when: di_system_unattended_upgrades_enabled
+
+- name: enable unattended upgrades
+  copy:
+    src: 20auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: 0644
+  when: di_system_unattended_upgrades_enabled
+
+- name: fix unattended upgrades cron not running (test)
+  stat: path=/etc/cron.daily/apt.disabled
+  register: apt_disabled
+  when: di_system_unattended_upgrades_enabled
+
+- name: fix unattended upgrades cron not running (fix)
+  command: mv /etc/cron.daily/apt.disabled /etc/cron.daily/apt
+  when: di_system_unattended_upgrades_enabled and apt_disabled.stat.exists
