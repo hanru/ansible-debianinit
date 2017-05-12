@@ -64,8 +64,9 @@ A list of packages to be removed (purged). By default 7 packages are removed as 
       - time
       - vim
       - wget
+      - whiptail
 
-A list of packages to be installed. By default 14 packages are installed as in the above block.
+A list of packages to be installed. By default 15 packages are installed as in the above block.
 
     di_system_fail2ban_enabled: yes
 
@@ -88,6 +89,12 @@ Server timezone. Unless you have specific requirements, `UTC` is the preferred a
 Whether to enable the time sync service. This service is provided by systemd and is lighter than ntp service. On Xen, KVM virtual servers and dedicated servers, this service should be enabled. On OpenVZ virtual servers, this service may not work.
 
 By default this service is enabled.
+
+    di_system_unattended_upgrades_enabled: no
+
+Whether to enable the unattended upgrades which will automatically upgrade the system on a daily basis. Please note that servers should still be taken care of even if this feature is enabled. For example, some new packages (esp. new Linux kernel) won't take effect unless the server is rebooted.
+
+By default unattended upgrades is disabled. It can be safely enabled on a standard system.
 
     di_add_users: []
 
