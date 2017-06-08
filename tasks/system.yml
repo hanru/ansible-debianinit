@@ -32,7 +32,7 @@
 
 - name: enable time sync
   command: timedatectl set-ntp true
-  when: di_system_timesync_enabled
+  when: di_system_timesync_enabled and ansible_service_mgr == 'systemd'
 
 - name: install unattended upgrades packages
   apt: name={{ item }} state=present
