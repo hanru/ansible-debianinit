@@ -50,15 +50,18 @@ By default only `root` is allowed to login.
 A list of packages to be removed (purged). By default 7 packages are removed as in the above block.
 
     di_system_installed_packages:
+      - apt-transport-https
       - bzip2
       - ca-certificates
       - cron
+      - curl
       - dbus
       - dnsutils
       - less
       - logrotate
       - mtr-tiny
       - openssl
+      - rsyslog
       - screen
       - sudo
       - time
@@ -66,7 +69,7 @@ A list of packages to be removed (purged). By default 7 packages are removed as 
       - wget
       - whiptail
 
-A list of packages to be installed. By default 15 packages are installed as in the above block.
+A list of packages to be installed. By default 18 packages are installed as in the above block.
 
     di_system_fail2ban_enabled: yes
 
