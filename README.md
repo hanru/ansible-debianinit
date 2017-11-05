@@ -3,7 +3,7 @@ debianinit: Debian Server Initialization
 
 [![Build Status](https://travis-ci.org/hanru/debianinit.svg?branch=master)](https://travis-ci.org/hanru/debianinit)
 
-This Ansible role configures a minimal Debian server that is ready for future use. Please note that currently only Debian Jessie (8.x) and Ubuntu Xenial (16.04) is guaranteed to work.
+This Ansible role configures a minimal Debian server that is ready for future use. Please note that currently only Debian Jessie (8.x), Debian Stretch (9.x) and Ubuntu Xenial (16.04) are guaranteed to work.
 
 Requirements
 ------------
