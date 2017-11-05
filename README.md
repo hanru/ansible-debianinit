@@ -121,7 +121,7 @@ By default no users are added to this list.
 
 Whether to install ufw, a human-friendly iptables front-end. By enabling ufw, the sane default policies (allow outgoing, deny incoming) are set and TCP on SSH port is allowed. If the server has further usage, such as http, you will need to further tweak the `di_ufw_rules` variable, see below and example playbook.
 
-By default ufw is installed.
+By default ufw is not installed.
 
     di_ufw_rules:
       - { rule: allow, from: any, to: any, port: {{ di_ssh_port }}, proto: tcp }
