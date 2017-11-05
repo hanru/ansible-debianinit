@@ -10,8 +10,14 @@
     - { direction: outgoing, policy: allow }
   notify: restart ufw
 
-- name: configure ufw to allow ssh
-  ufw: rule=allow port={{ di_ssh_port }} proto=tcp
+- name: configure user-defined ufw rules
+  ufw:
+    rule: '{{ item.rule }}'
+    from: '{{ item.from }}'
+    to: '{{ item.to }}'
+    port: '{{ item.port }}'
+    proto: '{{ item.proto }}'
+  with_items: '{{ di_ufw_rules }}'
   notify: restart ufw
 
 - name: enable ufw

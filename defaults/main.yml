@@ -47,3 +47,5 @@ di_system_timesync_enabled: yes
 di_system_unattended_upgrades_enabled: no
 
 di_ufw_enabled: yes
+di_ufw_rules:
+  - { rule: allow, from: any, to: any, port: '{{ di_ssh_port }}', proto: tcp }

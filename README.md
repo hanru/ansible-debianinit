@@ -101,7 +101,7 @@ By default unattended upgrades is disabled. It can be safely enabled on a standa
 
     di_add_users: []
 
-A list of users to be created on the server. Every user should have three fields defined: `name`, `password` and `shell`. See example section for more on how to define new users.
+A list of users to be created on the server. Every user **must** have three fields defined: `name`, `password` and `shell`. See example section for more on how to define new users.
 
 By default, no users are created.
 
@@ -119,9 +119,24 @@ By default no users are added to this list.
 
     di_ufw_enabled: yes
 
-Whether to install ufw, a human-friendly iptables front-end. By enabling ufw, the sane default policies (allow outgoing, deny incoming) are set and TCP on SSH port is allowed. If the server has further usage, such as http, you will need to manually add ufw rules, e.g. allow TCP on port 80 and 443.
+Whether to install ufw, a human-friendly iptables front-end. By enabling ufw, the sane default policies (allow outgoing, deny incoming) are set and TCP on SSH port is allowed. If the server has further usage, such as http, you will need to further tweak the `di_ufw_rules` variable, see below and example playbook.
 
 By default ufw is installed.
+
+    di_ufw_rules:
+      - { rule: allow, from: any, to: any, port: {{ di_ssh_port }}, proto: tcp }
+
+A list of user-defined ufw rules. Each rule **must** have five fields.
+
+1. `rule` defines the type of the rule. Possible values are `allow`, `deny` and `reject`.
+2. `from` defines source IP address. Set `from` to `any` if there's no source IP restriction.
+3. `to` defines destination IP address. Set `to` to `any` if there's no destination IP restriction.
+4. `port` defines destination port.
+5. `proto` defines network protocol. Possible values are `tcp`, `udp` and `any`.
+
+Example section shows how to define ufw rules. Note that if you need to change `di_ufw_rules`, the first rule which allows SSH port must be kept or you may risk locking yourself out of your server. Our role is only capable of simple ufw rules. For more complex rules, you may have to define them manually.
+
+By default TCP on SSH port is allowed. No additional ufw rules are defined.
 
 Dependencies
 ------------
@@ -143,7 +158,12 @@ Example Playbook
         di_ssh_allow_users: 'root test git'
         di_sudoers_password:
           - test
-        di_ufw_enabled: no
+        di_ufw_enabled: yes
+        di_ufw_rules:
+          - { rule: allow, from: any, to: any, port: '{{ di_ssh_port }}', proto: tcp }
+          - { rule: allow, from: any, to: any, port: 80, proto: tcp }
+          - { rule: allow, from: any, to: any, port: 443, proto: tcp }
+          - { rule: deny, from: 192.168.1.0/24, to: any, port: 53, proto: any }
       roles:
          - { role: hanru.debianinit }
 
