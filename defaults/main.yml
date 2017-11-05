@@ -6,7 +6,7 @@ di_add_users: []
 di_ssh_port: 22
 di_ssh_password_authentication: 'no'
 di_ssh_permit_root_login: 'without-password'
-di_ssh_allow_users: 'root'
+di_ssh_allow_users: '{{ ansible_user }}'
 
 di_sudoers_password: []
 di_sudoers_passwordless: []

@@ -8,7 +8,7 @@ This Ansible role configures a minimal Debian server that is ready for future us
 Requirements
 ------------
 
-* SSH login for user `root` is enabled
+* The SSH user on remote server has root privilege.
 * Python 2.x is installed on remote server
 
 Role Variables
@@ -32,11 +32,11 @@ Whether `root` user is allowed to login. If you run ansible as `root`, then `wit
 
 By default this setting is `without-password`.
 
-    di_ssh_allow_users: 'root'
+    di_ssh_allow_users: '{{ ansible_user }}'
 
 Which users are allowed to login via SSH. All allowed users are defined as a string, separated by spaces.
 
-By default only `root` is allowed to login.
+By default only the SSH user performs this role is allowed to login.
 
     di_system_removed_packages:
       - apache2
@@ -146,6 +146,8 @@ This role has no dependencies.
 Example Playbook
 ----------------
 
+When *root* is running the playbook:
+
     - hosts: testservers
       vars:
         di_add_users:
@@ -165,7 +167,15 @@ Example Playbook
           - { rule: allow, from: any, to: any, port: 443, proto: tcp }
           - { rule: deny, from: 192.168.1.0/24, to: any, port: 53, proto: any }
       roles:
-         - { role: hanru.debianinit }
+        - { role: hanru.debianinit }
+
+When a user with *sudo* privilege is running the playbook:
+
+    - hosts: testservers
+      vars:
+        ...
+      roles:
+        - { role: hanru.debianinit, become: yes }
 
 License
 -------
