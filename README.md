@@ -1,7 +1,7 @@
 debianinit: Debian Server Initialization
 ========================================
 
-[![Build Status](https://travis-ci.org/hanru/debianinit.svg?branch=master)](https://travis-ci.org/hanru/debianinit)
+[![Build Status](https://travis-ci.org/hanru/ansible-debianinit.svg?branch=master)](https://travis-ci.org/hanru/ansible-debianinit)
 
 This Ansible role configures a minimal Debian server that is ready for future use. Please note that currently only Debian Jessie (8.x), Debian Stretch (9.x) and Ubuntu Xenial (16.04) are guaranteed to work.
 
@@ -41,13 +41,12 @@ By default only the SSH user performs this role is allowed to login.
     di_system_removed_packages:
       - apache2
       - bind9
-      - postfix
       - rpcbind
       - samba
       - sendmail
       - snmp
 
-A list of packages to be removed (purged). By default 7 packages are removed as in the above block.
+A list of packages to be removed (purged). By default some packages are removed as in the above block.
 
     di_system_installed_packages:
       - apt-transport-https
@@ -65,23 +64,18 @@ A list of packages to be removed (purged). By default 7 packages are removed as 
       - screen
       - sudo
       - time
-      - vim
+      - vim-tiny
+      - vnstat
       - wget
       - whiptail
 
-A list of packages to be installed. By default 18 packages are installed as in the above block.
+A list of packages to be installed. By default some packages are installed as in the above block.
 
     di_system_fail2ban_enabled: yes
 
 Whether to install fail2ban, a service to ban bad hosts according to certain rules. After installation, brute-force SSH login attempts are automatically blocked.
 
 By default fail2ban is installed.
-
-    di_system_vnstat_enabled: yes
-
-Whether to install vnstat, a light-weight service to monitor and report network traffic usage.
-
-By default vnstat is installed.
 
     di_system_timezone: 'UTC'
 
@@ -117,16 +111,16 @@ A list of users who can execute `sudo` without providing their passwords. Since 
 
 By default no users are added to this list.
 
-    di_ufw_enabled: yes
+    di_ufw_enabled: no
 
 Whether to install ufw, a human-friendly iptables front-end. By enabling ufw, the sane default policies (allow outgoing, deny incoming) are set and TCP on SSH port is allowed. If the server has further usage, such as http, you will need to further tweak the `di_ufw_rules` variable, see below and example playbook.
 
 By default ufw is not installed.
 
     di_ufw_rules:
-      - { rule: allow, from: any, to: any, port: {{ di_ssh_port }}, proto: tcp }
+      - { rule: allow, from: any, to: any, port: '{{ di_ssh_port }}', proto: tcp }
 
-A list of user-defined ufw rules. Each rule **must** have five fields.
+A list of user-defined ufw rules. These rules will be applied when ufw is enabled. Each rule **must** have five fields.
 
 1. `rule` defines the type of the rule. Possible values are `allow`, `deny` and `reject`.
 2. `from` defines source IP address. Set `from` to `any` if there's no source IP restriction.
@@ -134,7 +128,7 @@ A list of user-defined ufw rules. Each rule **must** have five fields.
 4. `port` defines destination port.
 5. `proto` defines network protocol. Possible values are `tcp`, `udp` and `any`.
 
-Example section shows how to define ufw rules. Note that if you need to change `di_ufw_rules`, the first rule which allows SSH port must be kept or you may risk locking yourself out of your server. Our role is only capable of simple ufw rules. For more complex rules, you may have to define them manually.
+Example section shows how to define ufw rules. Note that if you need to change `di_ufw_rules`, the first rule which allows SSH port must be kept or you may risk locking yourself out of your server. This role is only capable of simple ufw rules. For more complex rules, you may have to define them manually.
 
 By default TCP on SSH port is allowed. No additional ufw rules are defined.
 

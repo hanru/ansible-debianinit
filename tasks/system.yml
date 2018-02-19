@@ -18,14 +18,6 @@
   service: name=fail2ban state=started enabled=yes
   when: di_system_fail2ban_enabled
 
-- name: install vnstat package
-  apt: name=vnstat state=present
-  when: di_system_vnstat_enabled
-
-- name: enable vnstat service
-  service: name=vnstat state=started enabled=yes
-  when: di_system_vnstat_enabled
-
 - name: set timezone
   timezone: name={{ di_system_timezone }}
   notify: restart cron

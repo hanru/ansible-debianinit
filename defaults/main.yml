@@ -14,7 +14,6 @@ di_sudoers_passwordless: []
 di_system_removed_packages:
   - apache2
   - bind9
-  - postfix
   - rpcbind
   - samba
   - sendmail
@@ -36,12 +35,12 @@ di_system_installed_packages:
   - screen
   - sudo
   - time
-  - vim
+  - vim-tiny
+  - vnstat
   - wget
   - whiptail
 
 di_system_fail2ban_enabled: yes
-di_system_vnstat_enabled: yes
 di_system_timezone: 'UTC'
 di_system_timesync_enabled: yes
 di_system_unattended_upgrades_enabled: no
