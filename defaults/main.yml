@@ -27,6 +27,7 @@ di_system_installed_packages:
   - curl
   - dbus
   - dnsutils
+  - haveged
   - less
   - logrotate
   - mtr-tiny

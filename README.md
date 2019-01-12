@@ -56,6 +56,7 @@ A list of packages to be removed (purged). By default some packages are removed 
       - curl
       - dbus
       - dnsutils
+      - haveged
       - less
       - logrotate
       - mtr-tiny
