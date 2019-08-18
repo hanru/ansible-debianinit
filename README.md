@@ -32,9 +32,9 @@ Whether `root` user is allowed to login. If you run ansible as `root`, then `wit
 
 By default this setting is `without-password`.
 
-    di_ssh_allow_users: '{{ ansible_user }}'
+    di_ssh_allow_users: []
 
-Which users are allowed to login via SSH. All allowed users are defined as a string, separated by spaces.
+A list of users who are allowed to login via SSH. An empty list means this setting is not enforced. By default this list is empty.
 
 By default only the SSH user performs this role is allowed to login.
 
@@ -59,6 +59,7 @@ A list of packages to be removed (purged). By default some packages are removed 
       - haveged
       - less
       - logrotate
+      - lsb-release
       - mtr-tiny
       - openssl
       - rsyslog
@@ -152,7 +153,10 @@ When *root* is running the playbook:
           - name: git
             password: anotherrandompassword
             shell: /usr/bin/git-shell
-        di_ssh_allow_users: 'root test git'
+        di_ssh_allow_users:
+          - root
+          - test
+          - git
         di_sudoers_password:
           - test
         di_ufw_enabled: yes

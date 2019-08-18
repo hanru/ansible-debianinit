@@ -1,6 +1,6 @@
 ---
 
-- name: configure ssh
+- name: configure ssh options
   lineinfile:
     dest: /etc/ssh/sshd_config
     state: present
@@ -13,6 +13,13 @@
       line: 'PasswordAuthentication {{ di_ssh_password_authentication }}'
     - regexp: '^PermitRootLogin'
       line: 'PermitRootLogin {{ di_ssh_permit_root_login }}'
-    - regexp: '^AllowUsers'
-      line: 'AllowUsers {{ di_ssh_allow_users }}'
+  notify: restart ssh
+
+- name: configure ssh allow users option
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: '^AllowUsers'
+    line: 'AllowUsers {{ di_ssh_allow_users | join(" ") }}'
+  when: di_ssh_allow_users | length > 0
   notify: restart ssh
