@@ -40,6 +40,24 @@
     mode: 0644
   when: di_system_unattended_upgrades_enabled
 
+- name: install mailx package for unattended upgrades
+  apt: name={{ item }} state=present
+  with_items:
+    - bsd-mailx
+  when:
+    - di_system_unattended_upgrades_enabled
+    - di_system_unattended_upgrades_mail_to != ''
+
+- name: config unattended upgrades mail sending
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    state: present
+    regexp: '^\/?\/?Unattended-Upgrade::Mail '
+    line: 'Unattended-Upgrade::Mail "{{ di_system_unattended_upgrades_mail_to }}";'
+  when:
+    - di_system_unattended_upgrades_enabled
+    - di_system_unattended_upgrades_mail_to != ''
+
 - name: fix unattended upgrades cron not running (test)
   stat: path=/etc/cron.daily/apt.disabled
   register: apt_disabled

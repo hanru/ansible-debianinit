@@ -46,6 +46,7 @@ di_system_fail2ban_enabled: yes
 di_system_timezone: 'UTC'
 di_system_timesync_enabled: yes
 di_system_unattended_upgrades_enabled: no
+di_system_unattended_upgrades_mail_to: ''
 
 di_ufw_enabled: no
 di_ufw_rules:

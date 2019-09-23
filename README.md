@@ -3,7 +3,15 @@ debianinit: Debian Server Initialization
 
 [![Build Status](https://travis-ci.org/hanru/ansible-debianinit.svg?branch=master)](https://travis-ci.org/hanru/ansible-debianinit)
 
-This Ansible role configures a minimal Debian server that is ready for future use. Please note that currently only Debian Jessie (8.x), Debian Stretch (9.x) and Ubuntu Xenial (16.04) are guaranteed to work.
+This Ansible role configures a minimal Debian server that is ready for future use.
+
+The role currently supports the following distributions:
+
+* Debian Jessie (8.x)
+* Debian Stretch (9.x)
+* Debian Buster (10.x)
+* Ubuntu Xenial (16.04)
+* Ubuntu Bionic (18.04)
 
 Requirements
 ------------
@@ -34,9 +42,9 @@ By default this setting is `without-password`.
 
     di_ssh_allow_users: []
 
-A list of users who are allowed to login via SSH. An empty list means this setting is not enforced. By default this list is empty.
+A list of users who are allowed to login via SSH. An empty list means this setting is not enforced.
 
-By default only the SSH user performs this role is allowed to login.
+By default this list is empty which means all user are allowed.
 
     di_system_removed_packages:
       - apache2
@@ -94,6 +102,12 @@ By default this service is enabled.
 Whether to enable the unattended upgrades which will automatically upgrade the system on a daily basis. Please note that servers should still be taken care of even if this feature is enabled. For example, some new packages (esp. new Linux kernel) won't take effect unless the server is rebooted.
 
 By default unattended upgrades is disabled. It can be safely enabled on a standard system.
+
+    di_system_unattended_upgrades_mail_to: ''
+
+A string representing an email address. An email will be sent to this address when unattended upgrades upgrade the system or encounter problems.
+
+By default this setting is empty which means no email will be sent.
 
     di_add_users: []
 
