@@ -10,6 +10,7 @@ The role currently supports the following distributions:
 * Debian Jessie (8.x)
 * Debian Stretch (9.x)
 * Debian Buster (10.x)
+* Debian Bullseye (11.x)
 * Ubuntu Xenial (16.04)
 * Ubuntu Bionic (18.04)
 
@@ -44,7 +45,7 @@ By default this setting is `without-password`.
 
 A list of users who are allowed to login via SSH. An empty list means this setting is not enforced.
 
-By default this list is empty which means all user are allowed.
+By default this list is empty which means all users are allowed.
 
     di_system_removed_packages:
       - apache2
@@ -173,6 +174,8 @@ When *root* is running the playbook:
           - git
         di_sudoers_password:
           - test
+        di_system_unattended_upgrades_enabled: yes
+        di_system_unattended_upgrades_mail_to: admin@example.com
         di_ufw_enabled: yes
         di_ufw_rules:
           - { rule: allow, from: any, to: any, port: '{{ di_ssh_port }}', proto: tcp }

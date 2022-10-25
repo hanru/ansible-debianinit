@@ -1,13 +1,17 @@
 ---
 
 - name: purge unnecessary packages
-  apt: name={{ item }} state=absent purge=yes
-  with_items: '{{ di_system_removed_packages }}'
+  apt:
+    name: '{{ di_system_removed_packages }}'
+    state: absent
+    purge: yes
   when: di_system_removed_packages | length > 0
 
 - name: install necessary packages
-  apt: name={{ item }} state=present update_cache=yes
-  with_items: '{{ di_system_installed_packages }}'
+  apt:
+    name: '{{ di_system_installed_packages }}'
+    state: present
+    update_cache: yes
   when: di_system_installed_packages | length > 0
 
 - name: install fail2ban package
@@ -27,10 +31,11 @@
   when: di_system_timesync_enabled and ansible_service_mgr == 'systemd'
 
 - name: install unattended upgrades packages
-  apt: name={{ item }} state=present
-  with_items:
-    - unattended-upgrades
-    - apt-listchanges
+  apt:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    state: present
   when: di_system_unattended_upgrades_enabled
 
 - name: enable unattended upgrades
@@ -41,9 +46,7 @@
   when: di_system_unattended_upgrades_enabled
 
 - name: install mailx package for unattended upgrades
-  apt: name={{ item }} state=present
-  with_items:
-    - bsd-mailx
+  apt: name=bsd-mailx state=present
   when:
     - di_system_unattended_upgrades_enabled
     - di_system_unattended_upgrades_mail_to != ''

@@ -7,11 +7,11 @@
     regexp: '{{ item.regexp }}'
     line: '{{ item.line }}'
   with_items:
-    - regexp: '^Port'
+    - regexp: '^#?Port'
       line: 'Port {{ di_ssh_port }}'
-    - regexp: '^PasswordAuthentication'
+    - regexp: '^#?PasswordAuthentication'
       line: 'PasswordAuthentication {{ di_ssh_password_authentication }}'
-    - regexp: '^PermitRootLogin'
+    - regexp: '^#?PermitRootLogin'
       line: 'PermitRootLogin {{ di_ssh_permit_root_login }}'
   notify: restart ssh
 
@@ -19,7 +19,7 @@
   lineinfile:
     dest: /etc/ssh/sshd_config
     state: present
-    regexp: '^AllowUsers'
+    regexp: '^#?AllowUsers'
     line: 'AllowUsers {{ di_ssh_allow_users | join(" ") }}'
   when: di_ssh_allow_users | length > 0
   notify: restart ssh
