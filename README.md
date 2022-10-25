@@ -11,14 +11,12 @@ The role currently supports the following distributions:
 * Debian Stretch (9.x)
 * Debian Buster (10.x)
 * Debian Bullseye (11.x)
-* Ubuntu Xenial (16.04)
-* Ubuntu Bionic (18.04)
 
 Requirements
 ------------
 
 * The SSH user on remote server has root privilege.
-* Python 2.x is installed on remote server
+* Python is installed on remote server
 
 Role Variables
 --------------
